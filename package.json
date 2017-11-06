@@ -1,0 +1,8 @@
+{
+  "name": "tinybrain",
+  "version": "0.0.0",
+  "main": "main.js",
+  "repository": "git@github.com:Walther/tinybrain.git",
+  "author": "Veeti Haapsamo <veeti.haapsamo@gmail.com>",
+  "license": "MIT"
+}
