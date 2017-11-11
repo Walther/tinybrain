@@ -5,6 +5,8 @@ class Neuron {
         this.weights = weights;
         this.bias = bias;
         this.nonlinearity = nonlinearity;
+        Object.seal(this.weights); // Closest we get to a real array in JS
+        Object.seal(this);
     }
 
     randomize() {
