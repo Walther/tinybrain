@@ -29,6 +29,10 @@ class Network {
                             )
                     )
             );
+        // Seal all the arrays
+        Object.seal(this.outputLayer);
+        this.hiddenLayers.map(layer => Object.seal(layer));
+        Object.seal(this.hiddenLayers);
     }
     /**
      * Randomizes all the weights in the network
