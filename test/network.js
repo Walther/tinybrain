@@ -73,7 +73,6 @@ describe('Network', () => {
             let testInput = [0, 1];
             network.randomize();
             let output = network.forwardPass(testInput);
-            console.log(output);
             output.should.be.an.instanceof(Array);
         });
     });
