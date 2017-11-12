@@ -1,6 +1,12 @@
 const { softmax } = require('./softmax');
 
 class Neuron {
+    /**
+     * An artificial neuron.
+     * @param {[number]} weights Array of the initial weights
+     * @param {number} bias Initial bias
+     * @param {function} nonlinearity Nonlinearity function, e.g. ReLU
+     */
     constructor(weights, bias, nonlinearity) {
         this.weights = weights;
         this.bias = bias;
@@ -9,6 +15,9 @@ class Neuron {
         Object.seal(this);
     }
 
+    /**
+     * Randomizes the neuron's weights
+     */
     randomize() {
         let array = Array.from(
             { length: this.weights.length },
@@ -17,6 +26,12 @@ class Neuron {
         this.weights = array;
     }
 
+    /**
+     * Calculates the neuron's activation for the given input based on current
+     * weights and bias
+     * @param {[number]} input Input vector for the neuron
+     * @returns {number} Activation of the neuron
+     */
     activate(input) {
         return this.nonlinearity.forward(
             input
