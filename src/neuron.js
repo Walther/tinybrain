@@ -39,6 +39,22 @@ class Neuron {
                 .reduce((value, sum) => sum + value)
         );
     }
+
+    /**
+     * Setter for the Neuron weights array
+     * @param {[number]} weights List of weights to use for the Neuron
+     */
+    setWeights(weights) {
+        this.weights = weights;
+    }
+
+    /**
+     * Setter for the Neuron bias value
+     * @param {number} bias Bias to use for the Neuron
+     */
+    setBias(bias) {
+        this.bias = bias;
+    }
 }
 
 exports.Neuron = Neuron;

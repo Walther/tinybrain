@@ -67,4 +67,16 @@ describe('Neuron', () => {
             result2.should.equal(0);
         });
     });
+    describe('Setters', () => {
+        it('Should have a weights setter', () => {
+            let newWeights = [...Array(features).keys()];
+            n1.setWeights(newWeights);
+            n1.weights.should.deep.equal(newWeights);
+        });
+        it('Should have a bias setter', () => {
+            let newBias = 5;
+            n1.setBias(newBias);
+            n1.bias.should.equal(newBias);
+        });
+    });
 });
