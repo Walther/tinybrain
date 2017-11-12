@@ -24,16 +24,16 @@ describe('Neuron', () => {
     });
 
     describe('Properties', () => {
-        it('Should be an object', () => n1.should.be.an('Object'));
+        it('Should be an object', () => n1.should.be.an.instanceof(Neuron));
         it('Should have a weights array', () =>
             n1.weights.should.be.an('Array'));
         it('Should have a nonlinearity function object', () =>
             n1.nonlinearity.should.be.a('Object'));
 
         it('Should have an activation function', () =>
-            n1.activate.should.be.a('Function'));
+            n1.activate.should.be.an.instanceof(Function));
         it('Should have a randomization function', () =>
-            n1.randomize.should.be.a('Function'));
+            n1.randomize.should.be.an.instanceof(Function));
     });
 
     describe('Randomize', () => {
@@ -46,9 +46,9 @@ describe('Neuron', () => {
 
     describe('Nonlinearity', () => {
         it('Should have a nonlinearity function, forward pass', () =>
-            n1.nonlinearity.forward.should.be.a('Function'));
+            n1.nonlinearity.forward.should.be.an.instanceof(Function));
         it('Should have a nonlinearity function, backward pass', () =>
-            n1.nonlinearity.backward.should.be.a('Function'));
+            n1.nonlinearity.backward.should.be.an.instanceof(Function));
     });
 
     describe('Activate', () => {
