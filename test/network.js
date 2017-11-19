@@ -8,7 +8,7 @@ const { Sigmoid } = require('../src/sigmoid');
 
 describe('Network', () => {
     let inputFeatures = 2;
-    let hiddenLayers = 10;
+    let hiddenLayers = 1;
     let outputClasses = 2;
     let initialWeights = new Array(inputFeatures).fill(1);
     let initialBias = 0;
@@ -84,7 +84,7 @@ describe('Network', () => {
             //let inputs = [[0, 1], [1, 0]];
 
             network.randomize();
-            for (let round = 0; round < 100; round++) {
+            for (let round = 0; round < 100000; round++) {
                 let testInput = _.sample(inputs);
                 let testTarget = xorTarget(testInput);
                 network.doTrainingRound(testInput, xorTarget(testInput));

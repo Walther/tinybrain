@@ -54,7 +54,7 @@ class Network {
             input
         );
         let finalOutput = this.activateNeurons(hiddenOutput, this.outputLayer);
-        finalOutput = softmax(finalOutput);
+        //finalOutput = softmax(finalOutput);
         return finalOutput;
     }
     backPropagate() {
@@ -65,12 +65,12 @@ class Network {
     doTrainingRound(input, target) {
         let learningRate = 0.1;
         let predictions = this.forwardPass(input); // returns array of final output layer activations
-        console.log(
-            'Total output error: ' +
-                _.zip(target, predictions).reduce((sum, value) =>
-                    Math.pow(value[0] - value[1], 2)
-                )
-        );
+        // console.log(
+        //     'Total output error: ' +
+        //         _.zip(target, predictions).reduce((sum, value) =>
+        //             Math.pow(value[0] - value[1], 2)
+        //         )
+        // );
 
         // Calculate partial derivatives for the layer's neurons with respect to the error
         let partials = (layer, nextLayer) =>
@@ -116,7 +116,6 @@ class Network {
             layer.map(neuron => {
                 neuron.setWeights(
                     neuron.weights.map((weight, index) => {
-                        console.log(neuron.getInputs()[index]);
                         return (
                             weight +
                             -1 *
@@ -131,10 +130,7 @@ class Network {
                 );
             });
         updateWeights(this.outputLayer);
-        this.hiddenLayers
-            .slice() // because reverse mutates in-place, but slice returns new ¯\_(ツ)_/¯
-            .reverse()
-            .forEach(layer => updateWeights(layer));
+        this.hiddenLayers.forEach(updateWeights);
     }
 
     /**
