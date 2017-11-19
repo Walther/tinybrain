@@ -74,23 +74,24 @@ class Network {
         // Calculate partial derivatives for the layer's neurons with respect to the error
         let partials = (layer, nextLayer) =>
             layer.map((neuron, index) => {
-                let partial;
+                let error;
                 if (nextLayer) {
                     // On hidden layer:
-                    // assume error term saved on neuron state on previous backprop
-                    partial = nextLayer
+                    // assume partial term saved on neuron state on previous backprop
+                    error = nextLayer
                         .map(
-                            neuron => neuron.weights[index] * neuron.getError()
+                            neuron =>
+                                neuron.weights[index] * neuron.getPartial()
                         )
                         .reduce((sum, value) => sum + value);
                 } else {
                     // On output layer:
-                    partial = targets[index] - predictions[index];
+                    error = targets[index] - predictions[index];
                 }
-                let error =
-                    partial *
+                let partial =
+                    error *
                     neuron.nonlinearity.backward(neuron.getActivation());
-                neuron.setError(error);
+                neuron.setPartial(partial);
             });
 
         partials(this.outputLayer, null); // ugly side-effect code!
@@ -111,10 +112,7 @@ class Network {
 
         console.log('Hidden layers: ' + JSON.stringify(this.hiddenLayers));
 
-        // What about bias?
-        let biasDelta = 0;
-
-        // And then generalize this for all neurons at that layer, and the previous layers
+        // We now have the
     }
 
     /**

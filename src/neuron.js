@@ -19,7 +19,7 @@ class Neuron {
          */
         this.activation = 0;
         this.inputs = new Array(weights.length).fill(0);
-        this.error = 0;
+        this.partial = 0;
         // Closest we get to a real array in JS
         Object.seal(this.weights);
         Object.seal(this.inputs);
@@ -69,8 +69,8 @@ class Neuron {
         this.bias = bias;
     }
 
-    setError(error) {
-        this.error = error;
+    setPartial(partial) {
+        this.partial = partial;
     }
 
     /**
@@ -90,8 +90,8 @@ class Neuron {
         return this.inputs;
     }
 
-    getError() {
-        return this.error;
+    getPartial() {
+        return this.partial;
     }
 }
 
