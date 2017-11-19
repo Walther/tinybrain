@@ -59,6 +59,64 @@ class Network {
         throw new Error('NOT IMPLEMENTED YET');
     }
 
+    dummyTeacherOutput(input) {
+        // Dummy teacher that wants the network to converge to always return first option
+        // TODO: remove, this is only for dev purposes!
+        let array = new Array(input.length).fill(0);
+        array[0] = 1;
+        return array;
+    }
+
+    doTrainingRound(input) {
+        let predictions = this.forwardPass(input); // returns array of final output layer activations
+        let targets = this.dummyTeacherOutput(input); // assume method of getting the desired output
+
+        // Calculate partial derivatives for the layer's neurons with respect to the error
+        let partials = (layer, nextLayer) =>
+            layer.map((neuron, index) => {
+                let partial;
+                if (nextLayer) {
+                    // On hidden layer:
+                    // assume error term saved on neuron state on previous backprop
+                    partial = nextLayer
+                        .map(
+                            neuron => neuron.weights[index] * neuron.getError()
+                        )
+                        .reduce((sum, value) => sum + value);
+                } else {
+                    // On output layer:
+                    partial = targets[index] - predictions[index];
+                }
+                let error =
+                    partial *
+                    neuron.nonlinearity.backward(neuron.getActivation());
+                neuron.setError(error);
+            });
+
+        partials(this.outputLayer, null); // ugly side-effect code!
+        console.log('Output layer: ' + JSON.stringify(this.outputLayer));
+
+        for (let index = this.hiddenLayers.length - 1; index >= 0; index--) {
+            if (index === this.hiddenLayers.length - 1) {
+                // Last hidden layer, use output layer
+                partials(this.hiddenLayers[index], this.outputLayer);
+            } else {
+                // Else, in general case, use the next layer
+                partials(
+                    this.hiddenLayers[index],
+                    this.hiddenLayers[index + 1]
+                );
+            }
+        }
+
+        console.log('Hidden layers: ' + JSON.stringify(this.hiddenLayers));
+
+        // What about bias?
+        let biasDelta = 0;
+
+        // And then generalize this for all neurons at that layer, and the previous layers
+    }
+
     /**
      * Helper function for neuron activations, used in forwardPass() as the reducer
      * @param {[number]} currentInput Input vector we're currently interested in

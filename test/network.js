@@ -76,4 +76,11 @@ describe('Network', () => {
             output.should.be.an.instanceof(Array);
         });
     });
+    describe('Training round', () => {
+        it('DEV DUMMY: Should run a training round', () => {
+            let testInput = [0, 1];
+            network.randomize();
+            network.doTrainingRound(testInput);
+        });
+    });
 });
