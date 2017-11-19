@@ -12,5 +12,8 @@
     "scripts": {
         "test": "yarn run mocha",
         "start": "node src/main.js"
+    },
+    "dependencies": {
+        "lodash": "^4.17.4"
     }
 }

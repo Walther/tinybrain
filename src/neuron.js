@@ -46,11 +46,11 @@ class Neuron {
      */
     activate(input) {
         this.inputs = input;
-        let weightedSum = input
-            .map((value, index) => value * this.weights[index])
-            .reduce((value, sum) => sum + value);
-        this.activation = this.nonlinearity.forward(weightedSum + this.bias);
-        return this.activation;
+        this.activation =
+            input
+                .map((value, index) => value * this.weights[index])
+                .reduce((value, sum) => sum + value) + this.bias;
+        return this.nonlinearity.forward(this.activation);
     }
 
     /**
@@ -79,7 +79,7 @@ class Neuron {
      * @returns {number} sum(weights * inputs)
      */
     getActivation() {
-        return this.Activation;
+        return this.activation;
     }
 
     /** Getter for the Neuron's inputs at the current forward pass.

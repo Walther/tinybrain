@@ -1,4 +1,6 @@
 const { Neuron } = require('./neuron');
+const { softmax } = require('./softmax');
+const _ = require('lodash');
 
 class Network {
     /**
@@ -52,6 +54,7 @@ class Network {
             input
         );
         let finalOutput = this.activateNeurons(hiddenOutput, this.outputLayer);
+        finalOutput = softmax(finalOutput);
         return finalOutput;
     }
     backPropagate() {
@@ -59,17 +62,15 @@ class Network {
         throw new Error('NOT IMPLEMENTED YET');
     }
 
-    dummyTeacherOutput(input) {
-        // Dummy teacher that wants the network to converge to always return first option
-        // TODO: remove, this is only for dev purposes!
-        let array = new Array(input.length).fill(0);
-        array[0] = 1;
-        return array;
-    }
-
-    doTrainingRound(input) {
+    doTrainingRound(input, target) {
+        let learningRate = 0.1;
         let predictions = this.forwardPass(input); // returns array of final output layer activations
-        let targets = this.dummyTeacherOutput(input); // assume method of getting the desired output
+        console.log(
+            'Total output error: ' +
+                _.zip(target, predictions).reduce((sum, value) =>
+                    Math.pow(value[0] - value[1], 2)
+                )
+        );
 
         // Calculate partial derivatives for the layer's neurons with respect to the error
         let partials = (layer, nextLayer) =>
@@ -86,7 +87,7 @@ class Network {
                         .reduce((sum, value) => sum + value);
                 } else {
                     // On output layer:
-                    error = targets[index] - predictions[index];
+                    error = predictions[index] - target[index];
                 }
                 let partial =
                     error *
@@ -95,7 +96,6 @@ class Network {
             });
 
         partials(this.outputLayer, null); // ugly side-effect code!
-        console.log('Output layer: ' + JSON.stringify(this.outputLayer));
 
         for (let index = this.hiddenLayers.length - 1; index >= 0; index--) {
             if (index === this.hiddenLayers.length - 1) {
@@ -110,9 +110,31 @@ class Network {
             }
         }
 
-        console.log('Hidden layers: ' + JSON.stringify(this.hiddenLayers));
-
-        // We now have the
+        // We now have the partials, let's update the weights to fix errors
+        // Start with output layer alone
+        let updateWeights = layer =>
+            layer.map(neuron => {
+                neuron.setWeights(
+                    neuron.weights.map((weight, index) => {
+                        console.log(neuron.getInputs()[index]);
+                        return (
+                            weight +
+                            -1 *
+                                learningRate *
+                                neuron.getInputs()[index] *
+                                neuron.getPartial()
+                        );
+                    })
+                );
+                neuron.setBias(
+                    neuron.bias + -1 * learningRate * neuron.getPartial()
+                );
+            });
+        updateWeights(this.outputLayer);
+        this.hiddenLayers
+            .slice() // because reverse mutates in-place, but slice returns new ¯\_(ツ)_/¯
+            .reverse()
+            .forEach(layer => updateWeights(layer));
     }
 
     /**

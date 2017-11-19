@@ -1,25 +1,18 @@
 const assert = require('assert');
 const should = require('chai').should();
+const _ = require('lodash');
 const { Network } = require('../src/network');
 const { Neuron } = require('../src/neuron');
-
-class DummyNonLinearity {
-    // Dummy linear activation function
-    forward(value) {
-        return value;
-    }
-    backward(value) {
-        return 1;
-    }
-}
+const { ReLU } = require('../src/relu');
+const { Sigmoid } = require('../src/sigmoid');
 
 describe('Network', () => {
     let inputFeatures = 2;
-    let hiddenLayers = 2;
+    let hiddenLayers = 10;
     let outputClasses = 2;
     let initialWeights = new Array(inputFeatures).fill(1);
     let initialBias = 0;
-    let nonLinearity = new DummyNonLinearity();
+    let nonLinearity = new Sigmoid();
     let network = new Network(
         inputFeatures,
         hiddenLayers,
@@ -77,10 +70,34 @@ describe('Network', () => {
         });
     });
     describe('Training round', () => {
-        it('DEV DUMMY: Should run a training round', () => {
-            let testInput = [0, 1];
+        it('DEV DUMMY: Should run a training round', done => {
+            // Assume output classification order [0, 1]
+            let xorTarget = input => {
+                if (input[0] === input[1]) {
+                    return [1, 0]; // classification 0
+                } else {
+                    return [0, 1]; // classification 1
+                }
+            };
+            let inputs = [[0, 0], [1, 1], [0, 1], [1, 0]];
+            console.log(inputs.map(xorTarget));
+            //let inputs = [[0, 1], [1, 0]];
+
             network.randomize();
-            network.doTrainingRound(testInput);
-        });
+            for (let round = 0; round < 100; round++) {
+                let testInput = _.sample(inputs);
+                let testTarget = xorTarget(testInput);
+                network.doTrainingRound(testInput, xorTarget(testInput));
+                //console.log(network.outputLayer[0]);
+            }
+            //console.log('---');
+            //console.log(JSON.stringify(network.outputLayer, null, 2));
+            // tests
+            console.log(network.forwardPass([0, 0])); // 0 aka [1, 0]
+            console.log(network.forwardPass([1, 1])); // 0 aka [1, 0]
+            console.log(network.forwardPass([0, 1])); // 1 aka [0, 1]
+            console.log(network.forwardPass([1, 0])); // 1 aka [0, 1]
+            done();
+        }).timeout(100000);
     });
 });
