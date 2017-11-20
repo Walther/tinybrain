@@ -7,6 +7,9 @@ TinyBrain is a naive, minimalistic, neural network implementation from scratch.
 
 ## Usage
 
+1. Clone the repository
+1. Run `yarn`
+
 There are various examples in the `examples` folder. To run them all, run
 
 ```
