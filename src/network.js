@@ -1,5 +1,4 @@
 const { Neuron } = require('./neuron');
-const { softmax } = require('./softmax');
 const _ = require('lodash');
 
 class Network {
@@ -54,7 +53,6 @@ class Network {
             input
         );
         let finalOutput = this.activateNeurons(hiddenOutput, this.outputLayer);
-        //finalOutput = softmax(finalOutput);
         return finalOutput;
     }
     backPropagate() {

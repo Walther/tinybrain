@@ -70,7 +70,10 @@ describe('Network', () => {
         });
     });
     describe('Training round', () => {
-        it('DEV DUMMY: Should run a training round', done => {
+        it('DEV DUMMY: Should learn the XOR problem', done => {
+            //TODO: Somehow this seems to work when using Sigmoid, but not ReLU
+            // What is wrong with the learning algo?
+
             // Assume output classification order [0, 1]
             let xorTarget = input => {
                 if (input[0] === input[1]) {
@@ -81,18 +84,13 @@ describe('Network', () => {
             };
             let inputs = [[0, 0], [1, 1], [0, 1], [1, 0]];
             console.log(inputs.map(xorTarget));
-            //let inputs = [[0, 1], [1, 0]];
 
             network.randomize();
-            for (let round = 0; round < 1e6; round++) {
+            for (let round = 0; round < 1e5; round++) {
                 let testInput = _.sample(inputs);
                 let testTarget = xorTarget(testInput);
                 network.doTrainingRound(testInput, xorTarget(testInput));
-                //console.log(network.outputLayer[0]);
             }
-            //console.log('---');
-            //console.log(JSON.stringify(network.outputLayer, null, 2));
-            // tests
             console.log(network.forwardPass([0, 0])); // 0 aka [1, 0]
             console.log(network.forwardPass([1, 1])); // 0 aka [1, 0]
             console.log(network.forwardPass([0, 1])); // 1 aka [0, 1]
