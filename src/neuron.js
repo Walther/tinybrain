@@ -30,10 +30,7 @@ class Neuron {
      * Randomizes the neuron's weights
      */
     randomize() {
-        let array = Array.from(
-            { length: this.weights.length },
-            () => Math.random() - 0.5
-        );
+        let array = Array.from({ length: this.weights.length }, Math.random);
         this.weights = array;
     }
 

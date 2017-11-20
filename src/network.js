@@ -60,15 +60,8 @@ class Network {
         throw new Error('NOT IMPLEMENTED YET');
     }
 
-    doTrainingRound(input, target) {
-        let learningRate = 0.1;
+    doTrainingRound(input, target, learningRate) {
         let predictions = this.forwardPass(input); // returns array of final output layer activations
-        // console.log(
-        //     'Total output error: ' +
-        //         _.zip(target, predictions).reduce((sum, value) =>
-        //             Math.pow(value[0] - value[1], 2)
-        //         )
-        // );
 
         // Calculate partial derivatives for the layer's neurons with respect to the error
         let partials = (layer, nextLayer) =>
@@ -129,6 +122,15 @@ class Network {
             });
         updateWeights(this.outputLayer);
         this.hiddenLayers.forEach(updateWeights);
+        let totalError =
+            1 /
+            predictions.length *
+            _.sum(
+                predictions.map((value, index) => {
+                    return Math.pow(value - target[index], 2);
+                })
+            );
+        return totalError;
     }
 
     /**
