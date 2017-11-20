@@ -84,7 +84,7 @@ describe('Network', () => {
             //let inputs = [[0, 1], [1, 0]];
 
             network.randomize();
-            for (let round = 0; round < 100000; round++) {
+            for (let round = 0; round < 1e6; round++) {
                 let testInput = _.sample(inputs);
                 let testTarget = xorTarget(testInput);
                 network.doTrainingRound(testInput, xorTarget(testInput));
@@ -98,6 +98,6 @@ describe('Network', () => {
             console.log(network.forwardPass([0, 1])); // 1 aka [0, 1]
             console.log(network.forwardPass([1, 0])); // 1 aka [0, 1]
             done();
-        }).timeout(100000);
+        }).timeout(2 * 60 * 1000);
     });
 });
