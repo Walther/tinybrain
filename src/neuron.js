@@ -11,7 +11,18 @@ class Neuron {
         this.weights = weights;
         this.bias = bias;
         this.nonlinearity = nonlinearity;
-        Object.seal(this.weights); // Closest we get to a real array in JS
+        /* Sadly, we need to store some dirty state:
+         * When doing a forward pass, we store the sum(weights * inputs)
+         * and the input array this neuron got during that pass.
+         * This is required for the backpropagation stage, for computing deltas.
+         * See: [Delta Rule](https://enwp.org/Delta_rule)
+         */
+        this.activation = 0;
+        this.inputs = new Array(weights.length).fill(0);
+        this.partial = 0;
+        // Closest we get to a real array in JS
+        Object.seal(this.weights);
+        Object.seal(this.inputs);
         Object.seal(this);
     }
 
@@ -28,16 +39,18 @@ class Neuron {
 
     /**
      * Calculates the neuron's activation for the given input based on current
-     * weights and bias
+     * weights and bias. Stores the sum(weights * inputs) and input to the
+     * neuron state, for use in the backpropagation pass.
      * @param {[number]} input Input vector for the neuron
      * @returns {number} Activation of the neuron
      */
     activate(input) {
-        return this.nonlinearity.forward(
+        this.inputs = input;
+        this.activation =
             input
                 .map((value, index) => value * this.weights[index])
-                .reduce((value, sum) => sum + value)
-        );
+                .reduce((value, sum) => sum + value) + this.bias;
+        return this.nonlinearity.forward(this.activation);
     }
 
     /**
@@ -54,6 +67,31 @@ class Neuron {
      */
     setBias(bias) {
         this.bias = bias;
+    }
+
+    setPartial(partial) {
+        this.partial = partial;
+    }
+
+    /**
+     * Getter for the Neuron's weighted input sum. Used for backpropagation
+     * pass
+     * @returns {number} sum(weights * inputs)
+     */
+    getActivation() {
+        return this.activation;
+    }
+
+    /** Getter for the Neuron's inputs at the current forward pass.
+     * Used for backpropagation pass.
+     * @returns {[number]} inputs´
+     */
+    getInputs() {
+        return this.inputs;
+    }
+
+    getPartial() {
+        return this.partial;
     }
 }
 

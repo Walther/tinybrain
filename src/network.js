@@ -1,4 +1,5 @@
 const { Neuron } = require('./neuron');
+const _ = require('lodash');
 
 class Network {
     /**
@@ -57,6 +58,77 @@ class Network {
     backPropagate() {
         // TODO
         throw new Error('NOT IMPLEMENTED YET');
+    }
+
+    doTrainingRound(input, target) {
+        let learningRate = 0.1;
+        let predictions = this.forwardPass(input); // returns array of final output layer activations
+        // console.log(
+        //     'Total output error: ' +
+        //         _.zip(target, predictions).reduce((sum, value) =>
+        //             Math.pow(value[0] - value[1], 2)
+        //         )
+        // );
+
+        // Calculate partial derivatives for the layer's neurons with respect to the error
+        let partials = (layer, nextLayer) =>
+            layer.map((neuron, index) => {
+                let error;
+                if (nextLayer) {
+                    // On hidden layer:
+                    // assume partial term saved on neuron state on previous backprop
+                    error = nextLayer
+                        .map(
+                            neuron =>
+                                neuron.weights[index] * neuron.getPartial()
+                        )
+                        .reduce((sum, value) => sum + value);
+                } else {
+                    // On output layer:
+                    error = predictions[index] - target[index];
+                }
+                let partial =
+                    error *
+                    neuron.nonlinearity.backward(neuron.getActivation());
+                neuron.setPartial(partial);
+            });
+
+        partials(this.outputLayer, null); // ugly side-effect code!
+
+        for (let index = this.hiddenLayers.length - 1; index >= 0; index--) {
+            if (index === this.hiddenLayers.length - 1) {
+                // Last hidden layer, use output layer
+                partials(this.hiddenLayers[index], this.outputLayer);
+            } else {
+                // Else, in general case, use the next layer
+                partials(
+                    this.hiddenLayers[index],
+                    this.hiddenLayers[index + 1]
+                );
+            }
+        }
+
+        // We now have the partials, let's update the weights to fix errors
+        // Start with output layer alone
+        let updateWeights = layer =>
+            layer.map(neuron => {
+                neuron.setWeights(
+                    neuron.weights.map((weight, index) => {
+                        return (
+                            weight +
+                            -1 *
+                                learningRate *
+                                neuron.getInputs()[index] *
+                                neuron.getPartial()
+                        );
+                    })
+                );
+                neuron.setBias(
+                    neuron.bias + -1 * learningRate * neuron.getPartial()
+                );
+            });
+        updateWeights(this.outputLayer);
+        this.hiddenLayers.forEach(updateWeights);
     }
 
     /**
