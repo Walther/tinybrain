@@ -6,13 +6,13 @@ const { Neuron } = require('../src/neuron');
 const { ReLU } = require('../src/relu');
 const { Sigmoid } = require('../src/sigmoid');
 
-describe('XOR: output as value', () => {
+describe('XOR: ReLU, output as classification', () => {
     let inputFeatures = 2;
     let hiddenLayers = 1;
-    let outputClasses = 1;
+    let outputClasses = 2;
     let initialWeights = new Array(inputFeatures).fill(1);
     let initialBias = 0;
-    let nonLinearity = new Sigmoid();
+    let nonLinearity = new ReLU();
     let network = new Network(
         inputFeatures,
         hiddenLayers,
@@ -22,15 +22,12 @@ describe('XOR: output as value', () => {
 
     describe('Training round', () => {
         it('Should learn the XOR problem', done => {
-            //TODO: Somehow this seems to work when using Sigmoid, but not ReLU
-            // What is wrong with the learning algo?
-
-            // Assume output as single value
+            // Assume output classification order [0, 1]
             let xorTarget = input => {
                 if (input[0] === input[1]) {
-                    return [0];
+                    return [1, 0]; // classified as 0
                 } else {
-                    return [1];
+                    return [0, 1]; // classified as 1
                 }
             };
             let inputs = [[0, 0], [1, 1], [0, 1], [1, 0]];
@@ -40,7 +37,7 @@ describe('XOR: output as value', () => {
             for (let round = 0; round < rounds; round++) {
                 let testInput = _.sample(inputs);
                 let testTarget = xorTarget(testInput);
-                let learningRate = 0.1;
+                let learningRate = 0.01;
                 let totalError = network.doTrainingRound(
                     testInput,
                     xorTarget(testInput),
@@ -58,13 +55,11 @@ describe('XOR: output as value', () => {
                 network.forwardPass([1, 0])
             ];
 
-            console.log('Expecting: ' + JSON.stringify(inputs.map(xorTarget)));
-            console.log(
-                'Got: ' +
-                    JSON.stringify(
-                        testOutputs.map(vector => vector.map(Math.round))
-                    )
-            );
+            let expected = inputs.map(xorTarget);
+            console.log('Expecting: ' + JSON.stringify(expected));
+            let got = testOutputs.map(valuepair => valuepair.map(Math.round));
+            console.log('Got: ' + JSON.stringify(got));
+            expected.should.deep.equal(got);
             done();
         }).timeout(1 * 60 * 1000);
     });
