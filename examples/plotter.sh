@@ -1,0 +1,1 @@
+gnuplot -p -e 'set terminal png size 2048,1024;set logscale y;plot "/dev/stdin" using 0:1 with lines'

@@ -15,14 +15,20 @@ TinyBrain is a naive, minimalistic, neural network implementation from scratch.
 1. Run `yarn test` to run the unit tests
 1. Implement your neural network solution using TinyBrain, or see examples below
 
-There are various examples in the `examples` folder. To run them all, run
+The `examples` folder has an example for learning the XOR function.
+
+To teach the network and run the test inputs, do e.g.
 
 ```
-yarn run mocha examples/
+node xor.js --layers 2 --relu --value --epochs 1e5 --rate 0.01
 ```
 
-To run a specific example, run e.g.
+```
+node xor.js --layers 2 --sigmoid --classification --epochs 1e5 --rate 0.1
+```
+
+If you have `gnuplot` installed, you can run:
 
 ```
-yarn run mocha examples/xor-relu-outputvalue.js
+node xor.js --layers 2 --relu --value --epochs 1e5 --rate 0.01 --plot | sh plotter.sh > graph.png && open graph.png
 ```
