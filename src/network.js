@@ -55,10 +55,6 @@ class Network {
         let finalOutput = this.activateNeurons(hiddenOutput, this.outputLayer);
         return finalOutput;
     }
-    backPropagate() {
-        // TODO
-        throw new Error('NOT IMPLEMENTED YET');
-    }
 
     doTrainingRound(input, target, learningRate) {
         let predictions = this.forwardPass(input); // returns array of final output layer activations
