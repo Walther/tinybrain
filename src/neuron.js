@@ -3,7 +3,7 @@ const { softmax } = require('./softmax');
 class Neuron {
     /**
      * An artificial neuron.
-     * @param {[number]} weights Array of the initial weights
+     * @param {Array.<number>} weights Array of the initial weights
      * @param {number} bias Initial bias
      * @param {function} nonlinearity Nonlinearity function, e.g. ReLU
      */
@@ -38,7 +38,7 @@ class Neuron {
      * Calculates the neuron's activation for the given input based on current
      * weights and bias. Stores the sum(weights * inputs) and input to the
      * neuron state, for use in the backpropagation pass.
-     * @param {[number]} input Input vector for the neuron
+     * @param {Array.<number>} input Input vector for the neuron
      * @returns {number} Activation of the neuron
      */
     activate(input) {
@@ -52,7 +52,7 @@ class Neuron {
 
     /**
      * Setter for the Neuron weights array
-     * @param {[number]} weights List of weights to use for the Neuron
+     * @param {Array.<number>} weights List of weights to use for the Neuron
      */
     setWeights(weights) {
         this.weights = weights;
@@ -81,7 +81,7 @@ class Neuron {
 
     /** Getter for the Neuron's inputs at the current forward pass.
      * Used for backpropagation pass.
-     * @returns {[number]} inputs´
+     * @returns {Array.<number>} inputs´
      */
     getInputs() {
         return this.inputs;

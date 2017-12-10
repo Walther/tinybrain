@@ -44,8 +44,8 @@ class Network {
     }
     /**
      * Computes a full forward pass of the network
-     * @param {[number]} input Input vector, as a number array
-     * @returns {[number]} Final activations at the output layer
+     * @param {Array.<number>} input Input vector, as a number array
+     * @returns {Array.<number>} Final activations at the output layer
      */
     forwardPass(input) {
         let hiddenOutput = this.hiddenLayers.reduce(
@@ -131,8 +131,8 @@ class Network {
 
     /**
      * Helper function for neuron activations, used in forwardPass() as the reducer
-     * @param {[number]} currentInput Input vector we're currently interested in
-     * @param {[Neuron]} layer Layer of neurons we're running the activations of
+     * @param {Array.<number>} currentInput Input vector we're currently interested in
+     * @param {Array.<Neuron>} layer Layer of neurons we're running the activations of
      */
     activateNeurons(currentInput, layer) {
         // For each layer, activate all neurons & return their values
