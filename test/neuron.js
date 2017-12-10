@@ -88,7 +88,7 @@ describe('Neuron', () => {
         it('Should have a inputs getter', () => {
             let inputs = [...Array(features).keys()];
             n1.activate(inputs);
-            n1.inputs.should.deep.equal(inputs);
+            n1.getInputs().should.deep.equal(inputs);
         });
         it('Should have a partial getter', () => {
             let newPartial = 5;
