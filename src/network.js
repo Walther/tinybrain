@@ -56,6 +56,12 @@ class Network {
         return finalOutput;
     }
 
+    /**
+     * Do a full supervised training round of the network. Does a forward pass, calculates error, and does a backpropagation of errors. NOTE: Lots of side-effects here!
+     * @param {Array.<number>} input The input for the network
+     * @param {Array.<number>} target The correct output for the given input, i.e. the target towards which the network should learn
+     * @param {number} learningRate Learning rate of the network, typically 1e-x where x ~= 2..5
+     */
     doTrainingRound(input, target, learningRate) {
         let predictions = this.forwardPass(input); // returns array of final output layer activations
 
