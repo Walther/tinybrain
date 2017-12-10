@@ -4,6 +4,6 @@ node_js:
 install:
   - yarn
 script:
-  - yarn run istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - yarn run istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly
   - codecov
   - yarn run test
