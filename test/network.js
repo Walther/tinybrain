@@ -69,4 +69,20 @@ describe('Network', () => {
             output.should.be.an.instanceof(Array);
         });
     });
+    describe('doTrainingRound', () => {
+        it('Should be a function', () => {
+            network.doTrainingRound.should.be.an.instanceof(Function);
+        });
+        it('Should return error', () => {
+            let testInput = [0, 1];
+            let target = [1, 0];
+            let learningRate = 0.01;
+            let error = network.doTrainingRound(
+                testInput,
+                target,
+                learningRate
+            );
+            error.should.be.a('number');
+        });
+    });
 });
