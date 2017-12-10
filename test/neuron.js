@@ -78,5 +78,27 @@ describe('Neuron', () => {
             n1.setBias(newBias);
             n1.bias.should.equal(newBias);
         });
+        it('Should have a partial setter', () => {
+            let newPartial = 5;
+            n1.setPartial(newPartial);
+            n1.partial.should.equal(newPartial);
+        });
+    });
+    describe('Getters', () => {
+        it('Should have a inputs getter', () => {
+            let inputs = [...Array(features).keys()];
+            n1.activate(inputs);
+            n1.inputs.should.deep.equal(inputs);
+        });
+        it('Should have a partial getter', () => {
+            let newPartial = 5;
+            n1.setPartial(newPartial);
+            n1.getPartial().should.equal(newPartial);
+        });
+        it('Should have an activation getter', () => {
+            let inputs = [...Array(features).keys()];
+            n1.activate(inputs);
+            n1.getActivation().should.equal(290);
+        });
     });
 });
