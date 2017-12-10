@@ -25,13 +25,13 @@ describe('ReLU', () => {
     });
     describe('Backward', () => {
         it('Should return 1 for value >= 0', () => {
-            relu.forward(1).should.equal(1);
+            relu.backward(1).should.equal(1);
         });
         it('Should return 0 for value < 0', () => {
-            relu.forward(-1).should.equal(0);
+            relu.backward(-1).should.equal(0);
         });
         it('Should return 0 for value == 0', () => {
-            relu.forward(0).should.equal(0);
+            relu.backward(0).should.equal(0);
         });
     });
 });
