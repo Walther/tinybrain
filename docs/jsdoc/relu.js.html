@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: relu.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,42 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: relu.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Rectified Linear Unit. Used as a nonlinear transfer function in neurons. See https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
+ */
+class ReLU {
+    /**
+     * Forward pass of a ReLU transfer with given value
+     * @param {number} value Number to pass through the ReLU function
+     */
+    forward(value) {
+        return Math.max(0, value);
+    }
 
+    /**
+     * Derivative of the ReLU. Used in the backpropagation phase of learning.
+     * @param {number} value Number to pass through the derivative of the ReLU function
+     */
+    backward(value) {
+        if (value > 0) {
+            return 1;
+        } else return 0;
+    }
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+exports.ReLU = ReLU;
+</code></pre>
+        </article>
+    </section>
 
 
 

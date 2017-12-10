@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: softmax.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,30 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: softmax.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Softmax function. Normalizes the given input array so that all numbers are between 0..1 and their sum is 1. See https://en.wikipedia.org/wiki/Softmax_function
+ * @param {Array.&lt;number>} array Array of numbers to run through the softmax function
+ */
+const softmax = array => {
+    let sigma = array
+        .map(z => Math.pow(Math.E, z))
+        .reduce((sum, value) => sum + value);
+    return array.map(z => Math.pow(Math.E, z) / sigma);
+};
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+exports.softmax = softmax;
+</code></pre>
+        </article>
+    </section>
 
 
 

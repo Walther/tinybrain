@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: sigmoid.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,40 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: sigmoid.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Sigmoid function. Squashes the input (any real number) to the range -1..1. Used as a nonlinear transfer function in neurons. See https://en.wikipedia.org/wiki/Sigmoid_function
+ */
+class Sigmoid {
+    /**
+     * Forward pass of a Sigmoid transfer with given value
+     * @param {number} value Number to pass through the sigmoid function
+     */
+    forward(value) {
+        return 1 / (1 + Math.exp(-value));
+    }
 
+    /**
+     * Derivative of the sigmoid function. Used in the backpropagation phase of learning.
+     * @param {number} value Number to pass through the derivative of sigmoid function
+     */
+    backward(value) {
+        return this.forward(value) * (1 - this.forward(value));
+    }
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+exports.Sigmoid = Sigmoid;
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -14,7 +14,8 @@
     },
     "scripts": {
         "test": "yarn run mocha",
-        "start": "node src/main.js"
+        "start": "node src/main.js",
+        "docs": "yarn run jsdoc src/ -- -d docs/jsdoc/"
     },
     "dependencies": {
         "command-line-args": "^4.0.7",
