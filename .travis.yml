@@ -5,5 +5,5 @@ install:
   - yarn
 script:
   - yarn run istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly
-  - codecov
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
   - yarn run test
