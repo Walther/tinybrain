@@ -14,6 +14,7 @@
     },
     "scripts": {
         "test": "yarn run mocha",
+        "coverage": "yarn run istanbul cover ./node_modules/mocha/bin/_mocha --reporter",
         "start": "node src/main.js",
         "docs": "yarn run jsdoc src/ -- -d docs/jsdoc/"
     },
